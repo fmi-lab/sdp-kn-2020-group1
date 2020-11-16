@@ -11,6 +11,7 @@ class RPNParser {
     std::string originalExpression;
     std::string parsedExpression;
     std::map<char, int> opsPriority;
+    std::map<char, std::function<int(const int&, const int&)>> operations;
 
     // utils
     void initOperationsPriority() {
@@ -68,8 +69,8 @@ class RPNParser {
     void processOperation(const char& currentOperation, std::stack<char>& operations) {
         int currentOpPriority = opsPriority[currentOperation];
         if (!operations.empty()) {
-            int lastOpPriority = opsPriority[operations.top()];
-            while(!operations.empty() && currentOpPriority < lastOpPriority) {
+            // int lastOpPriority = opsPriority[operations.top()];
+            while(!operations.empty() && currentOpPriority <= opsPriority[operations.top()]) {
                 parsedExpression.push_back(operations.top());
                 operations.pop();
             }
